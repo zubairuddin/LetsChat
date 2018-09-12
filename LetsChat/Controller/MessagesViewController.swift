@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 class MessagesViewController: UIViewController {
 
     @IBOutlet weak var tblMessages: UITableView!
@@ -56,6 +57,7 @@ class MessagesViewController: UIViewController {
             return
         }
         
+    
         let reference = Database.database().reference(withPath: "user-messages").child(loggedInUserId)
         reference.observe(.childAdded) { (snapshot) in
             print(snapshot)

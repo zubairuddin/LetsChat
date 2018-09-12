@@ -14,8 +14,10 @@ class MessageCell: UITableViewCell {
     @IBOutlet weak var imgSender: UIImageView!
     @IBOutlet weak var lblMessage: UILabel!
     
-    @IBOutlet weak var viewBubbleLeading: NSLayoutConstraint!
-    @IBOutlet weak var viewBubbleTrailing: NSLayoutConstraint!
+    @IBOutlet weak var viewBubbleLeading: NSLayoutConstraint?
+    @IBOutlet weak var viewBubbleTrailing: NSLayoutConstraint?
+    @IBOutlet weak var viewBubbleWidth: NSLayoutConstraint!
+    
     @IBOutlet weak var lblMessageTrailing: NSLayoutConstraint!
     @IBOutlet weak var lblMessageLeading: NSLayoutConstraint!
     

@@ -146,6 +146,12 @@ class ChatViewController: UIViewController {
             }
         }
     }
+    func estimateFrameForText(_ text: String) -> CGRect {
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16)], context: nil)
+    }
+
     
 }
 
@@ -162,12 +168,23 @@ extension ChatViewController: UITableViewDataSource {
         
         if message.fromUserId == Auth.auth().currentUser!.uid {
             //Message was sent
+            cell.viewBubbleLeading?.isActive = false
+            cell.viewBubbleTrailing?.isActive = true
+            
         }
         else {
             //Message was received
+            cell.viewBubbleLeading?.isActive = true
+            cell.viewBubbleTrailing?.isActive = false
+
         }
         
-        cell.textLabel?.text = message.text
+        cell.viewBubbleWidth.constant = estimateFrameForText(message.text).width + 32
+        
+        cell.viewBubble.layer.cornerRadius = 15
+        cell.viewBubble.layer.masksToBounds = true
+        
+        cell.lblMessage.text = message.text
         
         return cell
     }
