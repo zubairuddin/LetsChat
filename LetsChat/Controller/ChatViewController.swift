@@ -29,6 +29,7 @@ class ChatViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        self.tblMessages.allowsSelection = false
         //Get the stored messages from Firebase DB
         getMessagesFromFirebase()
         
@@ -65,6 +66,12 @@ class ChatViewController: UIViewController {
             }
             
             print("Message saved successfully in Messages node")
+            self.txtMessage.text = ""
+            
+            //Scroll to last row
+            let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
+            self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
+
             
             //Get the key of auto generated child node above
             let messageId = childMessage.key
@@ -164,27 +171,33 @@ extension ChatViewController: UITableViewDataSource {
         
         let message = arrMessages[indexPath.row]
         
-        //Detect if the message was sent or received
+        cell.viewBubble.layer.cornerRadius = 15
+        cell.viewBubble.layer.masksToBounds = true
         
+        cell.lblMessage.text = message.text
+
+        cell.viewBubbleWidth.constant = estimateFrameForText(message.text).width + 32
+        
+        //Detect if the message was sent or received
         if message.fromUserId == Auth.auth().currentUser!.uid {
             //Message was sent
             cell.viewBubbleLeading?.isActive = false
             cell.viewBubbleTrailing?.isActive = true
+            
+            cell.viewBubble.backgroundColor = .blue
+            cell.lblMessage.textColor = .white
             
         }
         else {
             //Message was received
             cell.viewBubbleLeading?.isActive = true
             cell.viewBubbleTrailing?.isActive = false
+            
+            cell.viewBubble.backgroundColor = .lightGray
+            cell.lblMessage.textColor = .black
+
 
         }
-        
-        cell.viewBubbleWidth.constant = estimateFrameForText(message.text).width + 32
-        
-        cell.viewBubble.layer.cornerRadius = 15
-        cell.viewBubble.layer.masksToBounds = true
-        
-        cell.lblMessage.text = message.text
         
         return cell
     }
@@ -192,7 +205,7 @@ extension ChatViewController: UITableViewDataSource {
 
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        handleSendMessage(toUser: selectedUser!)
         return true
     }
 }

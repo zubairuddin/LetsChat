@@ -58,11 +58,14 @@ class MessagesViewController: UIViewController {
         }
         
     
+        SVProgressHUD.show()
+        
         let reference = Database.database().reference(withPath: "user-messages").child(loggedInUserId)
         reference.observe(.childAdded) { (snapshot) in
             print(snapshot)
             
             let messageId = snapshot.key
+            
             let messagesNodeReference = Database.database().reference(withPath: "Messages").child(messageId)
             messagesNodeReference.observeSingleEvent(of: .value, with: { (snapshot) in
                 print(snapshot)
@@ -95,6 +98,7 @@ class MessagesViewController: UIViewController {
                     
                     self.arrMessages = sortedMessages
                     
+                    SVProgressHUD.dismiss()
                     self.tblMessages.reloadData()
                 }
             })
@@ -148,16 +152,19 @@ class MessagesViewController: UIViewController {
 }
 
 extension MessagesViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrMessages.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
         
-        //Get the username from toUserId
-        //let toUserId = arrMessages[indexPath.row].toUserId
+        cell.imgUserImage.layer.cornerRadius = cell.imgUserImage.frame.size.width / 2
+        cell.imgUserImage.layer.masksToBounds = true
         
         let chatPartnerId: String!
+        
         
         if arrMessages[indexPath.row].fromUserId == Auth.auth().currentUser?.uid {
             chatPartnerId = arrMessages[indexPath.row].toUserId
@@ -166,6 +173,7 @@ extension MessagesViewController: UITableViewDataSource {
             chatPartnerId = arrMessages[indexPath.row].fromUserId
         }
         
+        //
         let reference = Database.database().reference().child("Users").child(chatPartnerId)
         reference.observeSingleEvent(of: .value) { (snapshot) in
             print(snapshot)
@@ -184,7 +192,6 @@ extension MessagesViewController: UITableViewDataSource {
         cell.lblSubTitle.text = arrMessages[indexPath.row].text
         
         //Convert timestamp string to double and then create a date from it
-        
         if let doubleTimeStamp = Double(arrMessages[indexPath.row].timeStamp) {
             let timestampDate = Date(timeIntervalSince1970: doubleTimeStamp)
             

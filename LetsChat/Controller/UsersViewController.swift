@@ -60,6 +60,9 @@ extension UsersViewController: UITableViewDataSource {
         cell.lblTitle.text = arrUsers[indexPath.row].name
         cell.lblSubTitle.text = arrUsers[indexPath.row].email
         
+        cell.imgUserImage.layer.cornerRadius = cell.imgUserImage.frame.size.width / 2
+        cell.imgUserImage.layer.masksToBounds = true
+        
         //Assign image to image view
         if let imageUrl = URL(string: self.arrUsers[indexPath.row].profileImageUrl) {
             cell.imgUserImage.loadImageWithCachingFromUrl(imageUrl: imageUrl)
