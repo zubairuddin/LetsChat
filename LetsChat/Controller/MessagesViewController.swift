@@ -11,9 +11,13 @@ import Firebase
 import SVProgressHUD
 class MessagesViewController: UIViewController {
 
+    
+    var timer: Timer?
+    
     @IBOutlet weak var tblMessages: UITableView!
     
     var arrMessages = [Message]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,12 +61,10 @@ class MessagesViewController: UIViewController {
             return
         }
         
-    
-        SVProgressHUD.show()
+        //SVProgressHUD.show()
         
         let reference = Database.database().reference(withPath: "user-messages").child(loggedInUserId)
         reference.observe(.childAdded) { (snapshot) in
-            print(snapshot)
             
             let messageId = snapshot.key
             
@@ -98,8 +100,10 @@ class MessagesViewController: UIViewController {
                     
                     self.arrMessages = sortedMessages
                     
-                    SVProgressHUD.dismiss()
-                    self.tblMessages.reloadData()
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        self.tblMessages.reloadData()
+                    }
                 }
             })
         }
@@ -117,10 +121,14 @@ class MessagesViewController: UIViewController {
                 
                 //self.arrMessages.append(messageObject)
                 
-                if let toUserId = messageDict["toUserId"] {
-                    dictMessage[toUserId] = messageObject
-                }
+//                if let toUserId = messageDict["toUserId"] {
+//                    dictMessage[toUserId] = messageObject
+//                }
                 
+                if let chatPartnerId = messageObject.chatPartnerId {
+                    dictMessage[chatPartnerId] = messageObject
+                }
+
                 self.arrMessages = Array(dictMessage.values)
                 //******************************************//
                 
@@ -135,11 +143,15 @@ class MessagesViewController: UIViewController {
                 
                 self.arrMessages = sortedMessages
                 
-                self.tblMessages.reloadData()
+                DispatchQueue.main.async {
+                    self.tblMessages.reloadData()
+                }
+                
             }
         }
     }
     
+
     @objc func showUsers() {
         let vc = storyboard?.instantiateViewController(withIdentifier: "UsersViewController") as! UsersViewController
         navigationController?.pushViewController(vc, animated: true)
@@ -165,7 +177,6 @@ extension MessagesViewController: UITableViewDataSource {
         
         let chatPartnerId: String!
         
-        
         if arrMessages[indexPath.row].fromUserId == Auth.auth().currentUser?.uid {
             chatPartnerId = arrMessages[indexPath.row].toUserId
         }
@@ -173,11 +184,23 @@ extension MessagesViewController: UITableViewDataSource {
             chatPartnerId = arrMessages[indexPath.row].fromUserId
         }
         
-        //
+        cell.lblSubTitle.text = arrMessages[indexPath.row].text
+        
+        //Set up name and profile image of chat partner
+        setUpNameAndProfileImage(forCell: cell, chatPartnerId: chatPartnerId)
+        
+        //Convert timestamp string to double and then create a date from it
+        showMessageDateTime(forIndex: indexPath.row, cell: cell)
+    
+        return cell
+    }
+    
+    func setUpNameAndProfileImage(forCell cell: UserCell, chatPartnerId: String) {
         let reference = Database.database().reference().child("Users").child(chatPartnerId)
         reference.observeSingleEvent(of: .value) { (snapshot) in
-            print(snapshot)
+            //print(snapshot)
             if let userDict = snapshot.value as? [String:String] {
+                print("User dict is, ",userDict)
                 cell.lblTitle.text = userDict["name"]
                 
                 if let profileImageUrl = userDict["profileImageUrl"] {
@@ -188,11 +211,10 @@ extension MessagesViewController: UITableViewDataSource {
             }
             
         }
-        
-        cell.lblSubTitle.text = arrMessages[indexPath.row].text
-        
-        //Convert timestamp string to double and then create a date from it
-        if let doubleTimeStamp = Double(arrMessages[indexPath.row].timeStamp) {
+    }
+    
+    func showMessageDateTime(forIndex index:Int, cell: UserCell) {
+        if let doubleTimeStamp = Double(arrMessages[index].timeStamp) {
             let timestampDate = Date(timeIntervalSince1970: doubleTimeStamp)
             
             let dateFormatter = DateFormatter()
@@ -202,8 +224,32 @@ extension MessagesViewController: UITableViewDataSource {
             cell.lblTime.text = stringDate
             
         }
+    }
+}
+extension MessagesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        return cell
+        let message = arrMessages[indexPath.row]
+        guard let chatPartnerId = message.chatPartnerId else {
+            return
+        }
+        
+        Database.database().reference().child("Users").child(chatPartnerId).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dict = snapshot.value as? [String:String] else {
+                return
+            }
+            
+            let user = User(userDict: dict)
+            user.id = chatPartnerId
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+            vc.selectedUser = user
+            self.navigationController?.pushViewController(vc, animated: true)
+
+            
+            
+        }
     }
 }

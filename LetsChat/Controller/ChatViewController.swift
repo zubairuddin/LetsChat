@@ -69,8 +69,6 @@ class ChatViewController: UIViewController {
             self.txtMessage.text = ""
             
             //Scroll to last row
-            let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
-            self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
 
             
             //Get the key of auto generated child node above
@@ -127,6 +125,10 @@ class ChatViewController: UIViewController {
                     
                     //Reload the table
                     self.tblMessages.reloadData()
+                    
+                    let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
+                    self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
+
 
                 }
             })
@@ -181,19 +183,19 @@ extension ChatViewController: UITableViewDataSource {
         //Detect if the message was sent or received
         if message.fromUserId == Auth.auth().currentUser!.uid {
             //Message was sent
-            cell.viewBubbleLeading?.isActive = false
-            cell.viewBubbleTrailing?.isActive = true
+            cell.viewBubbleLeading.isActive = false
+            cell.viewBubbleTrailing.isActive = true
             
-            cell.viewBubble.backgroundColor = .blue
+            cell.viewBubble.backgroundColor = UIColor(red: 0, green: 149/255, blue: 255/255, alpha: 1)
             cell.lblMessage.textColor = .white
             
         }
         else {
             //Message was received
-            cell.viewBubbleLeading?.isActive = true
-            cell.viewBubbleTrailing?.isActive = false
+            cell.viewBubbleLeading.isActive = true
+            cell.viewBubbleTrailing.isActive = false
             
-            cell.viewBubble.backgroundColor = .lightGray
+            cell.viewBubble.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
             cell.lblMessage.textColor = .black
 
 

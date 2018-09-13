@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import SVProgressHUD
+
 class RegistrationViewController: UIViewController {
     
     @IBOutlet weak var txtEmail: UITextField!

@@ -13,6 +13,7 @@ import SVProgressHUD
 class UsersViewController: UIViewController {
 
     @IBOutlet weak var tblUsers: UITableView!
+    var timer: Timer?
     var arrUsers = [User]()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,8 @@ class UsersViewController: UIViewController {
                 let userObject = User(userDict: userDict)
                 userObject.id = snapshot.key
                 
+                print(Auth.auth().currentUser?.uid)
+                print(snapshot.key)
                 self.arrUsers.append(userObject)
 
                 DispatchQueue.main.async {
@@ -73,6 +76,8 @@ extension UsersViewController: UITableViewDataSource {
 }
 extension UsersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         
         let vc = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
         vc.selectedUser = arrUsers[indexPath.row]
