@@ -11,13 +11,11 @@ import Firebase
 import SVProgressHUD
 class MessagesViewController: UIViewController {
 
-    
-    var timer: Timer?
-    
     @IBOutlet weak var tblMessages: UITableView!
     
     var arrMessages = [Message]()
     
+    //MARK: - View Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,6 +31,7 @@ class MessagesViewController: UIViewController {
         getAllMessagesForLoggedInUser()
     }
     
+    //MARK: - Local methods
     func fetchCurrentUserAndSetNavbarTitle() {
         
         //Get user id of logged-in user
@@ -54,6 +53,7 @@ class MessagesViewController: UIViewController {
     
     func getAllMessagesForLoggedInUser() {
         
+        //Create a dict to show only the latest message on the Messages screen,
         var dictMessage = [String:Message]()
         
         guard let loggedInUserId = Auth.auth().currentUser?.uid  else {
@@ -68,25 +68,25 @@ class MessagesViewController: UIViewController {
             
             let messageId = snapshot.key
             
-            let messagesNodeReference = Database.database().reference(withPath: "Messages").child(messageId)
-            messagesNodeReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            let messagesNodeReference = Database.database().reference(withPath: "Messages").child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
+                
                 print(snapshot)
+                
                 if let messageDict = snapshot.value as? [String:String] {
+                    
                     let messageObject = Message(dictionary: messageDict)
                     
                     //Instead of appending to array, we will create a dictionary and assign its values property to the array, this is done to show only the most recent message on the table view
                     
                     //self.arrMessages.append(messageObject)
                     
-//                    if let toUserId = messageDict["toUserId"] {
-//                        dictMessage[toUserId] = messageObject
-//                    }
-                    
+                
                     if let chatPartnerId = messageObject.chatPartnerId {
                         dictMessage[chatPartnerId] = messageObject
                     }
                     
                     self.arrMessages = Array(dictMessage.values)
+
                     //******************************************//
                     
                     //Sort the messages in descending order, i.e. show the latest message first
@@ -109,50 +109,13 @@ class MessagesViewController: UIViewController {
         }
     }
     
-    func getAllMessagesFromFirebase() {
-        
-        var dictMessage = [String:Message]()
-        let reference = Database.database().reference().child("Messages")
-        reference.observe(.childAdded) { (snapshot) in
-            if let messageDict = snapshot.value as? [String:String] {
-                let messageObject = Message(dictionary: messageDict)
-                
-                //Instead of appending to array, we will create a dictionary and assign its values property to the array, this is done to show only the most recent message on the table view
-                
-                //self.arrMessages.append(messageObject)
-                
-//                if let toUserId = messageDict["toUserId"] {
-//                    dictMessage[toUserId] = messageObject
-//                }
-                
-                if let chatPartnerId = messageObject.chatPartnerId {
-                    dictMessage[chatPartnerId] = messageObject
-                }
-
-                self.arrMessages = Array(dictMessage.values)
-                //******************************************//
-                
-                //Sort the messages in descending order, i.e. show the latest message first
-                let sortedMessages = self.arrMessages.sorted(by: { (message1, message2) -> Bool in
-                    let firstMessageTimestamp = Double(message1.timeStamp)!
-                    let secondMessageTimestamp = Double(message2.timeStamp)!
-                    
-                    return firstMessageTimestamp > secondMessageTimestamp
-                })
-                
-                
-                self.arrMessages = sortedMessages
-                
-                DispatchQueue.main.async {
-                    self.tblMessages.reloadData()
-                }
-                
-            }
-        }
-    }
-    
-
     @objc func showUsers() {
+        
+        //Change back button title, this needs to be done before pushing
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+
         let vc = storyboard?.instantiateViewController(withIdentifier: "UsersViewController") as! UsersViewController
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -160,39 +123,6 @@ class MessagesViewController: UIViewController {
     @objc func logoutUser() {
         try! Auth.auth().signOut()
         navigationController?.popViewController(animated: true)
-    }
-}
-
-extension MessagesViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrMessages.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
-        
-        cell.imgUserImage.layer.cornerRadius = cell.imgUserImage.frame.size.width / 2
-        cell.imgUserImage.layer.masksToBounds = true
-        
-        let chatPartnerId: String!
-        
-        if arrMessages[indexPath.row].fromUserId == Auth.auth().currentUser?.uid {
-            chatPartnerId = arrMessages[indexPath.row].toUserId
-        }
-        else {
-            chatPartnerId = arrMessages[indexPath.row].fromUserId
-        }
-        
-        cell.lblSubTitle.text = arrMessages[indexPath.row].text
-        
-        //Set up name and profile image of chat partner
-        setUpNameAndProfileImage(forCell: cell, chatPartnerId: chatPartnerId)
-        
-        //Convert timestamp string to double and then create a date from it
-        showMessageDateTime(forIndex: indexPath.row, cell: cell)
-    
-        return cell
     }
     
     func setUpNameAndProfileImage(forCell cell: UserCell, chatPartnerId: String) {
@@ -225,7 +155,63 @@ extension MessagesViewController: UITableViewDataSource {
             
         }
     }
+    func getDetailOfChatPartnerAndShowChatLog(chatPartnerId:String) {
+        
+        Database.database().reference().child("Users").child(chatPartnerId).observeSingleEvent(of: .value) { (snapshot) in
+        guard let dict = snapshot.value as? [String:String] else {
+        return
+        }
+    
+        let user = User(userDict: dict)
+        user.id = chatPartnerId
+    
+        //Change back button title, this needs to be done before pushing
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+        vc.selectedUser = user
+        self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
+
+//MARK: - UITableView Datasource
+extension MessagesViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arrMessages.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
+        
+        cell.imgUserImage.layer.cornerRadius = cell.imgUserImage.frame.size.width / 2
+        cell.imgUserImage.layer.masksToBounds = true
+        
+        let chatPartnerId: String!
+        
+        if arrMessages[indexPath.row].fromUserId == Auth.auth().currentUser?.uid {
+            chatPartnerId = arrMessages[indexPath.row].toUserId
+        }
+        else {
+            chatPartnerId = arrMessages[indexPath.row].fromUserId
+        }
+        
+        cell.lblSubTitle.text = arrMessages[indexPath.row].text
+        
+        //Set up name and profile image of chat partner
+        setUpNameAndProfileImage(forCell: cell, chatPartnerId: chatPartnerId)
+        
+        //Convert timestamp string to double and then create a date from it
+        showMessageDateTime(forIndex: indexPath.row, cell: cell)
+    
+        return cell
+    }
+}
+
+//MARK: - UITableView Delegate
 extension MessagesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -236,20 +222,7 @@ extension MessagesViewController: UITableViewDelegate {
             return
         }
         
-        Database.database().reference().child("Users").child(chatPartnerId).observeSingleEvent(of: .value) { (snapshot) in
-            guard let dict = snapshot.value as? [String:String] else {
-                return
-            }
-            
-            let user = User(userDict: dict)
-            user.id = chatPartnerId
-            
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
-            vc.selectedUser = user
-            self.navigationController?.pushViewController(vc, animated: true)
-
-            
-            
-        }
+        //Get detail of the chat partner from Users node and show chat log for that user
+        getDetailOfChatPartnerAndShowChatLog(chatPartnerId: chatPartnerId)
     }
 }

@@ -10,26 +10,21 @@ import UIKit
 import Firebase
 import SVProgressHUD
 
-class LoginViewController: UIViewController {
+class LoginViewController: BaseViewController {
 
+    //MARK: - Outlets
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var btnLogin: UIButton!
     @IBOutlet weak var btnRegister: UIButton!
     
+    //MARK: - View Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        viewContainer.layer.cornerRadius = 5
-        viewContainer.layer.masksToBounds = true
-        
-        btnLogin.layer.cornerRadius = 5
-        btnLogin.layer.masksToBounds = true
-
-        btnRegister.layer.cornerRadius = 5
-        btnRegister.layer.masksToBounds = true
+        setUpView()
         
         //Check if user logged-in
         if Auth.auth().currentUser != nil {
@@ -38,12 +33,28 @@ class LoginViewController: UIViewController {
 
     }
     
+    //MARK: - Local methods
     private func navigateToMessagesScreen() {
         //Navigate to messages view
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MessagesViewController") as! MessagesViewController
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    private func setUpView() {
+        self.txtEmail.text = "juwairiyah@gmail.com"
+        
+        viewContainer.layer.cornerRadius = 5
+        viewContainer.layer.masksToBounds = true
+        
+        btnLogin.layer.cornerRadius = 5
+        btnLogin.layer.masksToBounds = true
+        
+        btnRegister.layer.cornerRadius = 5
+        btnRegister.layer.masksToBounds = true
 
+    }
+
+    //MARK: - Actions
     @IBAction func registerAction(_ sender: UIButton) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "RegistrationViewController") as! RegistrationViewController
         navigationController?.pushViewController(vc, animated: true)

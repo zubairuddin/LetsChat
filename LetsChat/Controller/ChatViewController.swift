@@ -11,6 +11,7 @@ import Firebase
 
 class ChatViewController: UIViewController {
     
+    //MARK:- Outlets
     @IBOutlet weak var tblMessages: UITableView!
     @IBOutlet weak var txtMessage: UITextField!
     @IBOutlet weak var btnSendMessage: UIButton!
@@ -24,6 +25,7 @@ class ChatViewController: UIViewController {
     
     var arrMessages = [Message]()
     
+    //MARK:- View Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,10 +39,20 @@ class ChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillChange(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        //Add keyboard dismiss gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.numberOfTapsRequired = 1
+        self.view.addGestureRecognizer(tapGesture)
     }
 
+    //MARK:- Actions
     @IBAction func sendMessage(_ sender: UIButton) {
         handleSendMessage(toUser: selectedUser!)
+    }
+    
+    //MARK:- Local methods
+    @objc func dismissKeyboard() {
+        txtMessage.resignFirstResponder()
     }
     
     func handleSendMessage(toUser: User) {
@@ -96,6 +108,12 @@ class ChatViewController: UIViewController {
         }
     }
     
+    func scrollToLastRow() {
+        UIView.animate(withDuration: 0.2) {
+            let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
+            self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
+        }
+    }
     func getMessagesFromFirebase() {
         
         guard let uid = Auth.auth().currentUser?.uid else {
@@ -126,9 +144,7 @@ class ChatViewController: UIViewController {
                     //Reload the table
                     self.tblMessages.reloadData()
                     
-                    let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
-                    self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
-
+                    self.scrollToLastRow()
 
                 }
             })
@@ -141,15 +157,22 @@ class ChatViewController: UIViewController {
             if let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect {
                 print(keyboardFrame)
                 
+                //Substract bottom insets of safe area to resolve the extra spacing issue above keyboard on iPhoneX
+                var keyBoardHeight = keyboardFrame.height
+                if #available(iOS 11.0, *) {
+                    keyBoardHeight -= view.safeAreaInsets.bottom
+                }
+
                 let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-                viewTypeMessageBottom.constant = isKeyboardShowing ? keyboardFrame.height : 0
+                
+                viewTypeMessageBottom.constant = isKeyboardShowing ? keyBoardHeight : 0
                 
                 UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
                     self.view.layoutIfNeeded()
                 }, completion: { (completed) in
                     //Scroll to last row of tableview
                     if isKeyboardShowing {
-                        //self.scrollToLastRow()
+                        self.scrollToLastRow()
                     }
                 })
             }
@@ -164,6 +187,7 @@ class ChatViewController: UIViewController {
     
 }
 
+//MARK:- UITableView datasource
 extension ChatViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrMessages.count
@@ -198,13 +222,13 @@ extension ChatViewController: UITableViewDataSource {
             cell.viewBubble.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
             cell.lblMessage.textColor = .black
 
-
         }
         
         return cell
     }
 }
 
+//MARK:- UITextField delegate methods
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         handleSendMessage(toUser: selectedUser!)

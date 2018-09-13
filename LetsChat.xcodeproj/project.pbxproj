@@ -24,6 +24,7 @@
 		3DFC92B82143D716007E44D3 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC92B72143D716007E44D3 /* MessagesViewController.swift */; };
 		3DFC92BA2143E942007E44D3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC92B92143E942007E44D3 /* Message.swift */; };
 		4A41BEF3C536E3ABD9637EE0 /* Pods_LetsChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB58736ADEEEBCBFE944A8D2 /* Pods_LetsChat.framework */; };
+		F9ADFEC5214A233F00073795 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9ADFEC4214A233F00073795 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		665AA8DE704CA4331E20ABED /* Pods-LetsChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LetsChat/Pods-LetsChat.debug.xcconfig"; sourceTree = "<group>"; };
 		C9D87E1B1C62764EF072E1DA /* Pods-LetsChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-LetsChat/Pods-LetsChat.release.xcconfig"; sourceTree = "<group>"; };
 		EB58736ADEEEBCBFE944A8D2 /* Pods_LetsChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LetsChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9ADFEC4214A233F00073795 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				3DB9F96F213C20DC007A9E28 /* ChatViewController.swift */,
 				3DFC92B121439831007E44D3 /* UsersViewController.swift */,
 				3DFC92B72143D716007E44D3 /* MessagesViewController.swift */,
+				F9ADFEC4214A233F00073795 /* BaseViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9ADFEC5214A233F00073795 /* BaseViewController.swift in Sources */,
 				3DB9F972213C262D007A9E28 /* Extensions.swift in Sources */,
 				3D660CAE213C16CE003AA6A0 /* LoginViewController.swift in Sources */,
 				3D8C6041213AE57C007F2536 /* RegistrationViewController.swift in Sources */,

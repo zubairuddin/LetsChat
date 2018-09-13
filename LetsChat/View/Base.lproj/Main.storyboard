@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aMc-ce-2Db">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aMc-ce-2Db">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="MarkerFeltThin.ttf">
-            <string>MarkerFelt-Thin</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Register-->
         <scene sceneID="tne-QT-ifu">
@@ -29,6 +24,14 @@
                                     <constraint firstAttribute="height" constant="112" id="ptZ-Gb-QMJ"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H8N-2x-jQr">
+                                <rect key="frame" x="131" y="64" width="112" height="112"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="selectImageAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pxh-11-0yP"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OsG-H0-b7V" userLabel="MainContainer">
                                 <rect key="frame" x="20" y="198" width="335" height="120"/>
                                 <subviews>
@@ -149,14 +152,18 @@
                         <color key="backgroundColor" red="0.23921568627450979" green="0.35686274509803922" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="y7G-5T-2fn" firstAttribute="top" secondItem="OsG-H0-b7V" secondAttribute="bottom" constant="15" id="5UG-yM-lhl"/>
+                            <constraint firstItem="H8N-2x-jQr" firstAttribute="bottom" secondItem="Eqb-SI-pLO" secondAttribute="bottom" id="BED-34-ANh"/>
                             <constraint firstItem="OsG-H0-b7V" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="EYF-jd-47U"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OsG-H0-b7V" secondAttribute="trailing" constant="20" id="GdC-T2-wPN"/>
                             <constraint firstItem="Eqb-SI-pLO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="L0d-XZ-I62"/>
                             <constraint firstItem="y7G-5T-2fn" firstAttribute="leading" secondItem="OsG-H0-b7V" secondAttribute="leading" id="L0v-2L-0wM"/>
                             <constraint firstItem="Eqb-SI-pLO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="MDA-pw-Efc"/>
+                            <constraint firstItem="H8N-2x-jQr" firstAttribute="trailing" secondItem="Eqb-SI-pLO" secondAttribute="trailing" id="MMp-5A-IMl"/>
                             <constraint firstItem="OsG-H0-b7V" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="P91-Ol-eTe"/>
+                            <constraint firstItem="H8N-2x-jQr" firstAttribute="top" secondItem="Eqb-SI-pLO" secondAttribute="top" id="QYH-lH-fe5"/>
                             <constraint firstItem="y7G-5T-2fn" firstAttribute="trailing" secondItem="OsG-H0-b7V" secondAttribute="trailing" id="Zx2-mp-Kdp"/>
                             <constraint firstItem="OsG-H0-b7V" firstAttribute="top" secondItem="Eqb-SI-pLO" secondAttribute="bottom" constant="22" id="ayh-sH-yXP"/>
+                            <constraint firstItem="H8N-2x-jQr" firstAttribute="leading" secondItem="Eqb-SI-pLO" secondAttribute="leading" id="idY-fO-FWL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -319,7 +326,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="Xwb-k6-MQ8"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SnE-Ft-1RJ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SnE-Ft-1RJ">
                                                     <rect key="frame" x="66" y="7.9999999999999982" width="301" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>

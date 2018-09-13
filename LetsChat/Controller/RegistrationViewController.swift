@@ -11,8 +11,9 @@ import Firebase
 import FirebaseStorage
 import SVProgressHUD
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: BaseViewController {
     
+    //MARK: - Outlets
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var viewContainer: UIView!
@@ -20,42 +21,18 @@ class RegistrationViewController: UIViewController {
     @IBOutlet weak var txtUserName: UITextField!
     @IBOutlet weak var imgUserImage: UIImageView!
     
+    //MARK: - View Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        viewContainer.layer.cornerRadius = 5
-        viewContainer.layer.masksToBounds = true
+        setUpView()
         
-        btnRegister.layer.cornerRadius = 5
-        btnRegister.layer.masksToBounds = true
-        
-        //Add gesture on image
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        tapGesture.numberOfTapsRequired = 1
-        imgUserImage.isUserInteractionEnabled = true
-        imgUserImage.addGestureRecognizer(tapGesture)
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        enableTextFields()
     }
     
-    @objc func imageTapped() {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.allowsEditing = true
-        present(picker, animated: true, completion: nil)
-    }
-
-    func enableTextFields() {
-        txtUserName.isUserInteractionEnabled = true
-        txtEmail.isUserInteractionEnabled = true
-        txtPassword.isUserInteractionEnabled = true
-    }
-    
-    func disableTextFields() {
-        txtUserName.isUserInteractionEnabled = false
-        txtEmail.isUserInteractionEnabled = false
-        txtPassword.isUserInteractionEnabled = false
-    }
-
     //MARK: - Actions
     @IBAction func registerUser(_ sender: UIButton) {
         
@@ -65,9 +42,8 @@ class RegistrationViewController: UIViewController {
         }
         
         //User Creation:
-        
         disableTextFields()
-
+        
         SVProgressHUD.show(withStatus: "Please wait...")
         SVProgressHUD.setDefaultMaskType(.black)
         
@@ -85,14 +61,12 @@ class RegistrationViewController: UIViewController {
                 }
                 
                 //Image Uploading :
-                let imageName = NSUUID().uuidString
+                let imageName = NSUUID().uuidString //to make image name unique
+                
                 //Get storage reference to our profile_images DB
                 let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
                 
-                //Convert UIImage to Data
-                
                 //Compressed image using jpeg
-                
                 if let profileImage = self.imgUserImage.image, let imageData = UIImageJPEGRepresentation(profileImage, 0.1) {
                     
                     //if let imageData = UIImagePNGRepresentation(self.imgUserImage.image!) {
@@ -106,7 +80,6 @@ class RegistrationViewController: UIViewController {
                         }
                         
                         //Image uploaded successfully
-                        print(metaData)
                         
                         //Register user
                         if let imageUrl = metaData?.downloadURL()?.absoluteString {
@@ -120,11 +93,10 @@ class RegistrationViewController: UIViewController {
                             //Navigate to messages screen
                             self.navigateToMessagesScreen()
                         }
-                        
                     })
                 }
-                
             }
+                
             else {
                 print(error!.localizedDescription)
                 SVProgressHUD.dismiss()
@@ -132,6 +104,78 @@ class RegistrationViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func selectImageAction(_ sender: UIButton) {
+        
+        let alert = UIAlertController(title: "Select Profile Image", message: nil, preferredStyle: .actionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { (action) in
+            self.openCamera()
+        }
+        let galleryAction = UIAlertAction(title: "Photo Library", style: .default) { (action) in
+            self.openPhotoLibrary()
+        }
+
+        alert.addAction(cameraAction)
+        alert.addAction(galleryAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: - Other Methods
+    private func openCamera() {
+        //Instantiate UIImagePickerController
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            //Show UIImagePicker with Camera
+            picker.sourceType = .camera
+            present(picker, animated: true, completion: nil)
+        }
+        else {
+            //Show Alert
+            let alert  = UIAlertController(title: "Warning", message: "Camera not available", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func openPhotoLibrary() {
+        //Instantiate UIImagePickerController
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true, completion: nil)
+    }
+
+    private func setUpView() {
+        viewContainer.layer.cornerRadius = 5
+        viewContainer.layer.masksToBounds = true
+        
+        btnRegister.layer.cornerRadius = 5
+        btnRegister.layer.masksToBounds = true
+        
+        imgUserImage.layer.cornerRadius = imgUserImage.frame.size.width / 2
+        imgUserImage.layer.borderWidth = 5
+        imgUserImage.layer.borderColor = UIColor.white.cgColor
+        imgUserImage.layer.masksToBounds = true
+    }
+
+    private func enableTextFields() {
+        txtUserName.isUserInteractionEnabled = true
+        txtEmail.isUserInteractionEnabled = true
+        txtPassword.isUserInteractionEnabled = true
+    }
+    
+    private func disableTextFields() {
+        txtUserName.isUserInteractionEnabled = false
+        txtEmail.isUserInteractionEnabled = false
+        txtPassword.isUserInteractionEnabled = false
+    }
+
+    
     
     private func registerUser(withUid userId: String, andJson values: [String:String]) {
         //Storing user in Users with username and email
@@ -147,6 +191,7 @@ class RegistrationViewController: UIViewController {
     }
 }
 
+//MARK: - UIImagePickerController delegate
 extension RegistrationViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         print(info)
@@ -163,7 +208,6 @@ extension RegistrationViewController: UIImagePickerControllerDelegate, UINavigat
         if let image = selectedImage {
             imgUserImage.image = image
         }
-        
         
         dismiss(animated: true, completion: nil)
     }

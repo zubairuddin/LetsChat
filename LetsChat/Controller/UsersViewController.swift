@@ -13,8 +13,10 @@ import SVProgressHUD
 class UsersViewController: UIViewController {
 
     @IBOutlet weak var tblUsers: UITableView!
-    var timer: Timer?
+
     var arrUsers = [User]()
+    
+    //MARK:- ViewLifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,6 +27,7 @@ class UsersViewController: UIViewController {
         
     }
     
+    //MARK:- Local methods
     func getUsersFromFirebase() {
         //Get reference to the user DB
         let userDB = Database.database().reference().child("Users")
@@ -40,8 +43,6 @@ class UsersViewController: UIViewController {
                 let userObject = User(userDict: userDict)
                 userObject.id = snapshot.key
                 
-                print(Auth.auth().currentUser?.uid)
-                print(snapshot.key)
                 self.arrUsers.append(userObject)
 
                 DispatchQueue.main.async {
@@ -79,6 +80,11 @@ extension UsersViewController: UITableViewDelegate {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
+        //Change back button title, this needs to be done before pushing
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+
         let vc = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
         vc.selectedUser = arrUsers[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
