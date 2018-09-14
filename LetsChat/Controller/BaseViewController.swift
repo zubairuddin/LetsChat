@@ -15,7 +15,9 @@ class BaseViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.view.backgroundColor = .darkGray
+        //self.view.backgroundColor = .darkGray
+        
+        self.view.backgroundColor = .white
     }
 
 }

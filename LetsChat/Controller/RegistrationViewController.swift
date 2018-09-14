@@ -27,7 +27,7 @@ class RegistrationViewController: BaseViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         setUpView()
-        
+                
     }
     override func viewWillAppear(_ animated: Bool) {
         enableTextFields()
@@ -114,9 +114,12 @@ class RegistrationViewController: BaseViewController {
         let galleryAction = UIAlertAction(title: "Photo Library", style: .default) { (action) in
             self.openPhotoLibrary()
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        }
 
         alert.addAction(cameraAction)
         alert.addAction(galleryAction)
+        alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
     }

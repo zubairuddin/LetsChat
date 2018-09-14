@@ -41,7 +41,9 @@ class LoginViewController: BaseViewController {
     }
     
     private func setUpView() {
-        self.txtEmail.text = "juwairiyah@gmail.com"
+        //TODO: Remove before deployment
+        txtEmail.text = "zubair@avicena.com"
+
         
         viewContainer.layer.cornerRadius = 5
         viewContainer.layer.masksToBounds = true

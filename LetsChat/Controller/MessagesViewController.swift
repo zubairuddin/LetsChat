@@ -68,7 +68,7 @@ class MessagesViewController: UIViewController {
             
             let messageId = snapshot.key
             
-            let messagesNodeReference = Database.database().reference(withPath: "Messages").child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
+            Database.database().reference(withPath: "Messages").child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 print(snapshot)
                 
