@@ -109,11 +109,15 @@ class ChatViewController: UIViewController {
     }
     
     func scrollToLastRow() {
-        UIView.animate(withDuration: 0.2) {
-            let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
-            self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
+        
+        if arrMessages.count > 0 {
+            UIView.animate(withDuration: 0.2) {
+                let indexPath = IndexPath(row: self.arrMessages.count - 1, section: 0)
+                self.tblMessages.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: false)
+            }
         }
     }
+
     func getMessagesFromFirebase() {
         
         guard let uid = Auth.auth().currentUser?.uid else {

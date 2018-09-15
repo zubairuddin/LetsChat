@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/ChatViewController.swift"
-            timestampString = "558495731.081565"
+            timestampString = "558697265.7056839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "39"
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/ChatViewController.swift"
-            timestampString = "558495731.08223"
+            timestampString = "558697265.706637"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
             endingLineNumber = "101"
-            landmarkName = "getMessagesFromFirebase()"
+            landmarkName = "handleSendMessage(toUser:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/RegistrationViewController.swift"
-            timestampString = "558495731.0827399"
+            timestampString = "558697265.707388"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "76"
@@ -58,13 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/LoginViewController.swift"
-            timestampString = "558102366.220203"
+            timestampString = "558697265.708308"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
             endingLineNumber = "35"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
+            landmarkName = "LoginViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/RegistrationViewController.swift"
-            timestampString = "558495731.08287"
+            timestampString = "558697265.708393"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "139"
             endingLineNumber = "139"
-            landmarkName = "registerUser(withUid:andJson:)"
+            landmarkName = "openCamera()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.557085"
+            timestampString = "558697265.709362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
@@ -122,13 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/ChatViewController.swift"
-            timestampString = "558495731.083547"
+            timestampString = "558697265.71016"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
             endingLineNumber = "57"
-            landmarkName = "handleSendMessage(toUser:)"
-            landmarkType = "7">
+            landmarkName = "ChatViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/UsersViewController.swift"
-            timestampString = "558497260.559099"
+            timestampString = "558634730.215979"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.5596009"
+            timestampString = "558697265.710848"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "73"
@@ -170,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.561114"
+            timestampString = "558697265.711428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
@@ -186,13 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.562559"
+            timestampString = "558697265.711965"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
-            landmarkName = "tableView(_:didSelectRowAt:)"
-            landmarkType = "7">
+            startingLineNumber = "229"
+            endingLineNumber = "229">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
@@ -234,7 +232,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.564247"
+            timestampString = "558697265.7124979"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "92"
@@ -282,7 +280,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/UsersViewController.swift"
-            timestampString = "558497260.566802"
+            timestampString = "558634730.2203701"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
@@ -298,12 +296,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.567373"
+            timestampString = "558697265.713304"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "168"
             endingLineNumber = "168"
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkName = "getDetailOfChatPartnerAndShowChatLog(chatPartnerId:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -314,12 +312,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.570015"
+            timestampString = "558697265.714152"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "206"
             endingLineNumber = "206"
-            landmarkName = "setUpNameAndProfileImage(forCell:chatPartnerId:)"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -330,7 +328,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LetsChat/Controller/MessagesViewController.swift"
-            timestampString = "558497260.571388"
+            timestampString = "558697265.714761"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "190"

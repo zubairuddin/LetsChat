@@ -12,12 +12,15 @@ class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Add gesture to dismiss keyboard when user clicks outside of any textfield
+        let dismissKeyboardGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        dismissKeyboardGesture.numberOfTapsRequired = 1
+        view.addGestureRecognizer(dismissKeyboardGesture)
 
-        // Do any additional setup after loading the view.
-        
-        //self.view.backgroundColor = .darkGray
-        
-        self.view.backgroundColor = .white
     }
 
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

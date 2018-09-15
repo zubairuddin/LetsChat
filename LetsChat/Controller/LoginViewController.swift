@@ -41,10 +41,6 @@ class LoginViewController: BaseViewController {
     }
     
     private func setUpView() {
-        //TODO: Remove before deployment
-        txtEmail.text = "zubair@avicena.com"
-
-        
         viewContainer.layer.cornerRadius = 5
         viewContainer.layer.masksToBounds = true
         
@@ -58,6 +54,12 @@ class LoginViewController: BaseViewController {
 
     //MARK: - Actions
     @IBAction func registerAction(_ sender: UIButton) {
+        
+        //Change back button title, this needs to be done before pushing
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+
         let vc = storyboard?.instantiateViewController(withIdentifier: "RegistrationViewController") as! RegistrationViewController
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -81,4 +83,16 @@ class LoginViewController: BaseViewController {
         }
     }
     
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == txtEmail {
+            txtPassword.becomeFirstResponder()
+        }
+        else {
+            textField.resignFirstResponder()
+        }
+        return true
+    }
 }

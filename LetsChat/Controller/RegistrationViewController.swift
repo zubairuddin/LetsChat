@@ -29,6 +29,7 @@ class RegistrationViewController: BaseViewController {
         setUpView()
                 
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         enableTextFields()
     }
@@ -161,8 +162,8 @@ class RegistrationViewController: BaseViewController {
         btnRegister.layer.masksToBounds = true
         
         imgUserImage.layer.cornerRadius = imgUserImage.frame.size.width / 2
-        imgUserImage.layer.borderWidth = 5
-        imgUserImage.layer.borderColor = UIColor.white.cgColor
+        //imgUserImage.layer.borderWidth = 5
+        //imgUserImage.layer.borderColor = UIColor.white.cgColor
         imgUserImage.layer.masksToBounds = true
     }
 
@@ -219,3 +220,22 @@ extension RegistrationViewController: UIImagePickerControllerDelegate, UINavigat
     }
 }
 
+extension RegistrationViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == txtUserName {
+            txtEmail.becomeFirstResponder()
+        }
+        if textField == txtEmail {
+            txtPassword.becomeFirstResponder()
+        }
+
+        else {
+            textField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+    }
+}
